@@ -278,6 +278,15 @@ Stationery_.ApplyHTMLTemplate = function() {
         html = Stationery.plainText2HTML(template.Text);
             
     HTMLEditor.rebuildDocumentFromSource(html);
+
+    // Set the subject by reading the <head> / <title> element
+    if (gMsgCompose.compFields.subject == '') {
+      let subject = Stationery.getSubject(HTMLEditor);
+      if (subject) {
+        gMsgCompose.compFields.subject = subject;
+        document.getElementById("msgSubject").value = gMsgCompose.compFields.subject;  
+      }
+    }
     
     //todo: gather metadata before cleaning!
     Stationery.cleanUpDomOfNewlyLoadedTemplate(HTMLEditor);

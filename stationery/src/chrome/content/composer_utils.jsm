@@ -110,6 +110,23 @@ Stationery.cleanUpDomOfNewlyLoadedTemplate = function(editor /*nsIEditor*/) {
   recurse(editor.rootElement.parentNode.childNodes);
 }
 
+Stationery.getSubject = function(editor /*nsIEditor*/) {
+  function recurse(nodes) {
+    for (let i = 0 ; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.nodeName == "TITLE") {
+        return node.innerText;
+      }
+
+      if (node.hasChildNodes()) {
+        const result = recurse(node.childNodes);
+        if (result) return result;
+      }
+    }
+  }
+  return recurse(editor.rootElement.parentNode.childNodes);
+}
+
 Stationery.getTemplatePlaceholder = function(win, nodes, type) {
   if (!nodes) { //initialize recurrency
     return Stationery.getTemplatePlaceholder(win, win.GetCurrentEditor().rootElement.childNodes, type);
